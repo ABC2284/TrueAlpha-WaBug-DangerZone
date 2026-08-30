@@ -3,7 +3,6 @@ const express = require("express");
 const fs = require("fs");
 const crypto = require("crypto");
 const pino = require("pino");
-const readline = require("readline");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -428,15 +427,8 @@ app.post("/api/crash", async (req, res) => {
 });
 
 // ==========================================
-// KUANZISHA WHATSAPP BOT KUPITIA PAIRING CODE
+// KUANZISHA WHATSAPP BOT KWENYE CLOUD SERVER
 // ==========================================
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
-
-const question = (text) => new Promise((resolve) => rl.question(text, resolve));
-
 async function startBot() {
   const { state, saveCreds } = await useMultiFileAuthState("auth_info");
 
@@ -448,16 +440,24 @@ async function startBot() {
 
   global.sock = sock;
 
+  // Ikiwa bado haijasajiliwa, unaweza kuweka namba yako hapa chini kwenye mabano ili ipate Pairing Code moja kwa moja kupitia Logs za Render
   if (!sock.authState.creds.registered) {
-    let phoneNumber = await question("\nWeka namba yako ya WhatsApp (mfano: 2557xxxxxxxx): ");
-    phoneNumber = phoneNumber.replace(/[^0-9]/g, "");
+    const phoneNumber = "255651675994"; // <--- Weka namba yako hapa kama unahitaji pairing code mpya (Mfano: "255712345678")
     
-    await delay(3000);
-    let code = await sock.requestPairingCode(phoneNumber);
-    code = code?.match(/.{1,4}/g)?.join("-") || code;
-    console.log(`\n================================`);
-    console.log(` PAIRING CODE YAKO NI: ${code}`);
-    console.log(`================================\n`);
+    if (phoneNumber) {
+      try {
+        await delay(3000);
+        let code = await sock.requestPairingCode(phoneNumber);
+        code = code?.match(/.{1,4}/g)?.join("-") || code;
+        console.log(`\n================================`);
+        console.log(` PAIRING CODE YAKO NI: ${code}`);
+        console.log(`================================\n`);
+      } catch (err) {
+        console.error("Hitilafu kuomba pairing code:", err);
+      }
+    } else {
+      console.log("ℹ️ Weka namba ya simu kwenye variable ya 'phoneNumber' ndani ya server.js kama unahitaji pairing code mpya.");
+    }
   }
 
   sock.ev.on("connection.update", (update) => {
@@ -470,7 +470,7 @@ async function startBot() {
         startBot();
       }
     } else if (connection === "open") {
-      console.log("🔥 WhatsApp imeingia na kuunganishwa kwa mafanikio kupitia Pairing Code!");
+      console.log("🔥 WhatsApp imeingia na kuunganishwa kwa mafanikio kwenye server!");
     }
   });
 
