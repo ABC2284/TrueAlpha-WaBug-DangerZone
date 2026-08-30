@@ -1,12 +1,14 @@
 {
-  "name": "web-bug",
+  "name": "wa-bug-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "WhatsApp Attack Server",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.19.2"
+    "@whiskeysockets/baileys": "^6.7.13",
+    "express": "^4.19.2",
+    "pino": "^9.0.0"
   }
 }
