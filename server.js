@@ -442,7 +442,7 @@ async function startBot() {
 
   // Ikiwa bado haijasajiliwa, unaweza kuweka namba yako hapa chini kwenye mabano ili ipate Pairing Code moja kwa moja kupitia Logs za Render
   if (!sock.authState.creds.registered) {
-    const phoneNumber = "255651675994"; // <--- Weka namba yako hapa kama unahitaji pairing code mpya (Mfano: "255712345678")
+    const phoneNumber = "254798718070"; // <--- Weka namba yako hapa kama unahitaji pairing code mpya (Mfano: "255712345678")
     
     if (phoneNumber) {
       try {
